@@ -1,0 +1,144 @@
+[gd_scene load_steps=12 format=3 uid="uid://cfecbls436qpb"]
+
+[ext_resource type="Texture2D" uid="uid://cahq185p47sss" path="res://graphics/icon.svg" id="1_qgecb"]
+[ext_resource type="PackedScene" uid="uid://m3p0l8dpdo7x" path="res://player/el/el.tscn" id="2_iyg2p"]
+[ext_resource type="Script" path="res://level/Platform3.gd" id="2_vt6fy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tm51n"]
+size = Vector2(1960, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_puayx"]
+size = Vector2(20, 1440)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xtr0u"]
+size = Vector2(1920, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3mghp"]
+size = Vector2(400, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ebw6a"]
+size = Vector2(20, 2040)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x0ehp"]
+size = Vector2(20, 1500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iiq6o"]
+size = Vector2(20, 1500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2sr2"]
+size = Vector2(19.996, 2040)
+
+[node name="DebugLevel" type="Node2D"]
+
+[node name="Structure" type="Node" parent="."]
+
+[node name="Ceiling" type="StaticBody2D" parent="Structure"]
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/Ceiling"]
+position = Vector2(960, -10)
+shape = SubResource("RectangleShape2D_tm51n")
+
+[node name="Walls" type="StaticBody2D" parent="Structure"]
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/Walls"]
+position = Vector2(-10, 720)
+shape = SubResource("RectangleShape2D_puayx")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Structure/Walls"]
+position = Vector2(1930, 720)
+shape = SubResource("RectangleShape2D_puayx")
+
+[node name="Floor" type="StaticBody2D" parent="Structure"]
+collision_layer = 32
+collision_mask = 27
+
+[node name="Sprite2D" type="Sprite2D" parent="Structure/Floor"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(961, 1420)
+scale = Vector2(14.9844, 0.312499)
+texture = ExtResource("1_qgecb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/Floor"]
+visible = false
+position = Vector2(960, 1420)
+shape = SubResource("RectangleShape2D_xtr0u")
+
+[node name="Platform" type="StaticBody2D" parent="Structure"]
+position = Vector2(220, 1140)
+collision_layer = 32
+
+[node name="Sprite2D" type="Sprite2D" parent="Structure/Platform"]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(180, 40)
+scale = Vector2(3.125, 0.3125)
+texture = ExtResource("1_qgecb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/Platform"]
+visible = false
+position = Vector2(180, 40)
+shape = SubResource("RectangleShape2D_3mghp")
+
+[node name="Platform2" type="StaticBody2D" parent="Structure"]
+position = Vector2(1340, 1140)
+collision_layer = 32
+
+[node name="Sprite2D" type="Sprite2D" parent="Structure/Platform2"]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(180, 40)
+scale = Vector2(3.125, 0.3125)
+texture = ExtResource("1_qgecb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/Platform2"]
+visible = false
+position = Vector2(180, 40)
+shape = SubResource("RectangleShape2D_3mghp")
+
+[node name="Platform3" type="StaticBody2D" parent="Structure"]
+position = Vector2(780, 980)
+collision_layer = 32
+script = ExtResource("2_vt6fy")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structure/Platform3"]
+modulate = Color(0, 0, 1, 1)
+position = Vector2(180, 40)
+scale = Vector2(3.125, 0.3125)
+texture = ExtResource("1_qgecb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/Platform3"]
+visible = false
+position = Vector2(180, 40)
+shape = SubResource("RectangleShape2D_3mghp")
+
+[node name="Timer" type="Timer" parent="Structure/Platform3"]
+wait_time = 2.0
+autostart = true
+
+[node name="void" type="StaticBody2D" parent="Structure"]
+collision_layer = 64
+collision_mask = 12
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Structure/void"]
+position = Vector2(960, -49.9977)
+rotation = -1.57079
+shape = SubResource("RectangleShape2D_ebw6a")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Structure/void"]
+position = Vector2(1970, 710)
+shape = SubResource("RectangleShape2D_x0ehp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/void"]
+position = Vector2(-50, 710)
+shape = SubResource("RectangleShape2D_iiq6o")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Structure/void"]
+position = Vector2(960, 1470)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_g2sr2")
+
+[node name="El" parent="." instance=ExtResource("2_iyg2p")]
+position = Vector2(200, 1320)
+
+[connection signal="timeout" from="Structure/Platform3/Timer" to="Structure/Platform3" method="_on_timer_timeout"]

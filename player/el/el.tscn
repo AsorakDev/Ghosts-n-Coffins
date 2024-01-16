@@ -1,0 +1,159 @@
+[gd_scene load_steps=18 format=3 uid="uid://m3p0l8dpdo7x"]
+
+[ext_resource type="Script" path="res://player/el/El.gd" id="1_n3kq4"]
+[ext_resource type="Texture2D" uid="uid://c8vyumijcls4y" path="res://graphics/EL01.png" id="2_g217r"]
+[ext_resource type="Script" path="res://FSM/FSM.gd" id="3_lpiuc"]
+[ext_resource type="Script" path="res://FSM/states/Idle.gd" id="4_ww6f5"]
+[ext_resource type="Script" path="res://FSM/states/Walk.gd" id="5_73hle"]
+[ext_resource type="Script" path="res://FSM/states/Jump.gd" id="6_j1wrr"]
+[ext_resource type="Script" path="res://FSM/states/Fall.gd" id="7_ira4c"]
+[ext_resource type="Script" path="res://FSM/states/Crouch.gd" id="8_1p0uu"]
+[ext_resource type="Script" path="res://FSM/states/Dash.gd" id="9_3uy27"]
+[ext_resource type="Script" path="res://FSM/states/Revolver.gd" id="10_c02vk"]
+[ext_resource type="Script" path="res://FSM/states/Shotgun.gd" id="11_ovgsd"]
+[ext_resource type="Script" path="res://FSM/states/Sniper.gd" id="12_cipep"]
+[ext_resource type="Script" path="res://FSM/states/RPG.gd" id="13_6nkm1"]
+[ext_resource type="Script" path="res://FSM/states/Knife.gd" id="14_d2ec6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8dse5"]
+radius = 40.0
+height = 160.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_un2xo"]
+radius = 40.0
+
+[sub_resource type="Theme" id="Theme_pd0if"]
+default_font_size = 50
+
+[node name="El" type="CharacterBody2D"]
+collision_mask = 32
+script = ExtResource("1_n3kq4")
+move_speed = 500.0
+acceleration = 100.0
+max_fall_speed = 1200.0
+jump_speed = -1000.0
+gravity = 300.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 2.86102e-06)
+scale = Vector2(7.5, 10)
+texture = ExtResource("2_g217r")
+
+[node name="HurtboxStanding" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_8dse5")
+
+[node name="HurtboxCrouching" type="CollisionShape2D" parent="."]
+position = Vector2(0, 40)
+shape = SubResource("CircleShape2D_un2xo")
+
+[node name="FSM" type="Node" parent="." node_paths=PackedStringArray("inital_state")]
+script = ExtResource("3_lpiuc")
+inital_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="FSM"]
+script = ExtResource("4_ww6f5")
+
+[node name="Walk" type="Node" parent="FSM"]
+script = ExtResource("5_73hle")
+
+[node name="Jump" type="Node" parent="FSM"]
+script = ExtResource("6_j1wrr")
+
+[node name="Fall" type="Node" parent="FSM"]
+script = ExtResource("7_ira4c")
+
+[node name="Crouch" type="Node" parent="FSM"]
+script = ExtResource("8_1p0uu")
+
+[node name="Dash" type="Node" parent="FSM"]
+script = ExtResource("9_3uy27")
+
+[node name="Revolver" type="Node" parent="FSM"]
+script = ExtResource("10_c02vk")
+
+[node name="Shotgun" type="Node" parent="FSM"]
+script = ExtResource("11_ovgsd")
+
+[node name="Sniper" type="Node" parent="FSM"]
+script = ExtResource("12_cipep")
+
+[node name="Knife" type="Node" parent="FSM"]
+script = ExtResource("14_d2ec6")
+
+[node name="RPG" type="Node" parent="FSM"]
+script = ExtResource("13_6nkm1")
+
+[node name="Markers" type="Node" parent="."]
+
+[node name="UM" type="Marker2D" parent="Markers"]
+position = Vector2(0, -95)
+
+[node name="ULM" type="Marker2D" parent="Markers"]
+position = Vector2(-10, -90)
+
+[node name="URM" type="Marker2D" parent="Markers"]
+position = Vector2(10, -90)
+
+[node name="ULL" type="Marker2D" parent="Markers"]
+position = Vector2(-20, -85)
+
+[node name="URR" type="Marker2D" parent="Markers"]
+position = Vector2(20, -85)
+
+[node name="DM" type="Marker2D" parent="Markers"]
+position = Vector2(0, 95)
+
+[node name="DLM" type="Marker2D" parent="Markers"]
+position = Vector2(-10, 90)
+
+[node name="DRM" type="Marker2D" parent="Markers"]
+position = Vector2(10, 90)
+
+[node name="DLL" type="Marker2D" parent="Markers"]
+position = Vector2(-20, 85)
+
+[node name="DRR" type="Marker2D" parent="Markers"]
+position = Vector2(20, 85)
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="SwapWeaponTimer" type="Timer" parent="Timers"]
+wait_time = 0.5
+one_shot = true
+
+[node name="SwapOutTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="JumpTimer" type="Timer" parent="Timers"]
+wait_time = 0.05
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
+[node name="RevolverTapTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[node name="RevolverMashTimer" type="Timer" parent="Timers"]
+wait_time = 0.5
+one_shot = true
+
+[node name="RevolverCoolDown" type="Timer" parent="Timers"]
+wait_time = 0.5
+one_shot = true
+
+[node name="Projectiles" type="Node" parent="."]
+
+[node name="DEBUG" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -320.0
+offset_right = 20.0
+offset_bottom = -251.0
+theme = SubResource("Theme_pd0if")
+
+[connection signal="timeout" from="Timers/RevolverMashTimer" to="FSM/Revolver" method="_on_revolver_mash_timer_timeout"]
+[connection signal="timeout" from="Timers/RevolverCoolDown" to="FSM/Revolver" method="_on_revolver_cool_down_timeout"]
+[connection signal="child_exiting_tree" from="Projectiles" to="FSM/Revolver" method="_on_projectiles_child_exiting_tree"]

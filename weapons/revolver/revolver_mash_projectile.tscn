@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://boyp2mk7uds5f"]
+
+[ext_resource type="Script" path="res://weapons/revolver/revolver_mash_projectile.gd" id="1_7t1ht"]
+[ext_resource type="Texture2D" uid="uid://cahq185p47sss" path="res://graphics/icon.svg" id="2_7hdav"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7q8qr"]
+height = 120.0
+
+[node name="RevolverMashProjectile" type="Area2D"]
+collision_layer = 8
+collision_mask = 96
+script = ExtResource("1_7t1ht")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 1, 1)
+position = Vector2(0, 1.90735e-06)
+scale = Vector2(0.15625, 0.9375)
+texture = ExtResource("2_7hdav")
+
+[node name="Area2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_7q8qr")
+
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
