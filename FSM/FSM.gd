@@ -20,7 +20,7 @@ func _process(delta):
 	if current_state:
 		current_state.stateUpdate(delta)
 		
-	$"../DEBUG".text = current_state.name + "\n" + str(player.velocity.x) + "\n" + str(player.velocity.y)
+	$"../DEBUG".text = current_state.name + "\n" + str(player.velocity.x) + "\n" + str(player.velocity.y) + "\n" + str(player.facing_direction)
 
 func change_state(old_state: State, new_state_name : String):
 	if old_state != current_state:

@@ -1,18 +1,29 @@
 extends CharacterBody2D
 class_name Player
 
-@onready var projectiles : Node = $Projectiles
+@onready var el_marker = $Markers/ElMarker
+@onready var peko_marker = $Markers/PekoMarker
+@onready var puyo_marker = $Markers/PuyoMarker
+@onready var arial_marker_left = $Markers/ArialMarkerLeft
+@onready var arial_marker_right = $Markers/ArialMarkerRight
 
-#@onready var revolver = $FSM/Revolver
-#@onready var shotgun = $FSM/Shotgun
-#@onready var sniper = $FSM/Sniper
-#@onready var knife = $FSM/Knife
-#@onready var rpg = $FSM/RPG
+@onready var hurtbox_standing = $HurtboxStanding
+@onready var hurtbox_crouching = $HurtboxCrouching
 
+@onready var primary_attack_timer = $Timers/PrimaryAttackTimer
+@onready var arial_attack_spawn_timer = $Timers/ArialAttackSpawnTimer
+@onready var arial_attack_timer = $Timers/ArialAttackTimer
 @onready var swap_weapon_timer = $Timers/SwapWeaponTimer
 @onready var swap_out_timer = $Timers/SwapOutTimer
 @onready var coyote_timer = $Timers/CoyoteTimer
 @onready var jump_timer = $Timers/JumpTimer
+@onready var slide_timer = $Timers/SlideTimer
+
+@export var hit_points : int
+#hit_points == 3, Peko, Puyo, El
+#hit_points == 2, Peko, El
+#hit_points == 1, El
+#hit_points == 0, DIE
 
 @export var move_speed : float
 @export var acceleration : float
@@ -21,8 +32,12 @@ class_name Player
 @export var gravity : float
 
 var direction : Vector2 
+var facing_direction : float = 1
 
+var lock_direction: bool = false
 var alter_move : bool = false
+var can_arial_attack : bool = true
+var can_attack : bool = true
 var can_swap : bool = true
 var can_jump : bool = true
 
@@ -37,19 +52,23 @@ func _ready():
 
 func _physics_process(_delta):
 	move()
-	change_weapon()
 	get_direction()
 	apply_gravity()
+	handle_health()
 	move_and_slide()
 
 func get_direction():
-	direction = Input.get_vector("left", "right", "up", "down")
-	
-	if direction.x > 0:
-		direction.x = 1
-	
-	elif direction.x < 0:
-		direction.x = -1
+	if not lock_direction:
+		direction = Input.get_vector("left", "right", "up", "down")
+		
+		if direction.x > 0:
+			direction.x = 1
+		
+		elif direction.x < 0:
+			direction.x = -1
+		
+		if direction.x != 0:
+			facing_direction = direction.x 
 	
 func move():
 	if not alter_move:
@@ -62,17 +81,18 @@ func apply_gravity():
 	if velocity.y > max_fall_speed:
 		velocity.y = max_fall_speed
 
-func change_weapon():
-	if Input.is_action_just_pressed("swap"):
-		if current_weapon == primary_weapon and can_swap:
-			current_weapon = secondary_weapon
-			can_swap = false
-			swap_weapon_timer.start()
-			
-		elif current_weapon == secondary_weapon and can_swap:
-			current_weapon = primary_weapon
-			can_swap = false
-			swap_weapon_timer.start()
+func handle_health():
+	if hit_points == 3:
+		pass
 	
-	if swap_weapon_timer.is_stopped():
-		can_swap = true
+	elif hit_points == 2:
+		pass
+	
+	elif hit_points == 1:
+		pass
+	
+	elif hit_points == 0:
+		die()
+
+func die():
+	pass

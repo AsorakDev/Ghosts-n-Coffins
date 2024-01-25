@@ -1,8 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://cfecbls436qpb"]
+[gd_scene load_steps=16 format=3 uid="uid://cfecbls436qpb"]
 
+[ext_resource type="Texture2D" uid="uid://b2yq7uwagifeu" path="res://graphics/04fb4b12ab87e1832d17f723c81d1d69.png" id="1_dimgo"]
+[ext_resource type="Script" path="res://level/Door.gd" id="1_h3403"]
 [ext_resource type="Texture2D" uid="uid://cahq185p47sss" path="res://graphics/icon.svg" id="1_qgecb"]
 [ext_resource type="PackedScene" uid="uid://m3p0l8dpdo7x" path="res://player/el/el.tscn" id="2_iyg2p"]
 [ext_resource type="Script" path="res://level/Platform3.gd" id="2_vt6fy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrd2i"]
+size = Vector2(152, 18)
+
+[sub_resource type="Theme" id="Theme_7bdnk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tm51n"]
 size = Vector2(1960, 20)
@@ -31,6 +38,44 @@ size = Vector2(19.996, 2040)
 [node name="DebugLevel" type="Node2D"]
 
 [node name="Structure" type="Node" parent="."]
+
+[node name="Door" type="Area2D" parent="Structure"]
+script = ExtResource("1_h3403")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structure/Door"]
+z_index = -2
+position = Vector2(960, 1256)
+scale = Vector2(0.20375, 0.20734)
+texture = ExtResource("1_dimgo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure/Door"]
+position = Vector2(964, 1393)
+shape = SubResource("RectangleShape2D_qrd2i")
+
+[node name="Label" type="Label" parent="Structure/Door"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 936.0
+offset_top = 1064.0
+offset_right = 986.0
+offset_bottom = 1087.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme = SubResource("Theme_7bdnk")
+theme_override_font_sizes/font_size = 50
+text = "ENTER"
+
+[node name="Timer" type="Timer" parent="Structure/Door"]
+process_callback = 0
+one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="Structure/Door"]
+position = Vector2(960, 720)
 
 [node name="Ceiling" type="StaticBody2D" parent="Structure"]
 collision_layer = 32
@@ -69,6 +114,7 @@ shape = SubResource("RectangleShape2D_xtr0u")
 [node name="Platform" type="StaticBody2D" parent="Structure"]
 position = Vector2(220, 1140)
 collision_layer = 32
+collision_mask = 12
 
 [node name="Sprite2D" type="Sprite2D" parent="Structure/Platform"]
 modulate = Color(1, 0, 0, 1)
@@ -84,6 +130,7 @@ shape = SubResource("RectangleShape2D_3mghp")
 [node name="Platform2" type="StaticBody2D" parent="Structure"]
 position = Vector2(1340, 1140)
 collision_layer = 32
+collision_mask = 13
 
 [node name="Sprite2D" type="Sprite2D" parent="Structure/Platform2"]
 modulate = Color(0, 1, 0, 1)
@@ -99,6 +146,7 @@ shape = SubResource("RectangleShape2D_3mghp")
 [node name="Platform3" type="StaticBody2D" parent="Structure"]
 position = Vector2(780, 980)
 collision_layer = 32
+collision_mask = 13
 script = ExtResource("2_vt6fy")
 
 [node name="Sprite2D" type="Sprite2D" parent="Structure/Platform3"]
@@ -138,7 +186,13 @@ position = Vector2(960, 1470)
 rotation = 1.57079
 shape = SubResource("RectangleShape2D_g2sr2")
 
+[node name="Enemy" type="Node" parent="."]
+
 [node name="El" parent="." instance=ExtResource("2_iyg2p")]
+z_index = -1
 position = Vector2(200, 1320)
 
+[connection signal="body_entered" from="Structure/Door" to="Structure/Door" method="_on_body_entered"]
+[connection signal="body_exited" from="Structure/Door" to="Structure/Door" method="_on_body_exited"]
+[connection signal="timeout" from="Structure/Door/Timer" to="Structure/Door" method="_on_timer_timeout"]
 [connection signal="timeout" from="Structure/Platform3/Timer" to="Structure/Platform3" method="_on_timer_timeout"]

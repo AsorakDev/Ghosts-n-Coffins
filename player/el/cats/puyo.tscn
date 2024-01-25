@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://6q1jneh4oejy"]
+
+[ext_resource type="Texture2D" uid="uid://b84385sf0mbwr" path="res://graphics/dds92rv-fbcd54ee-d2c9-4694-9bdb-18b62a793173.png" id="1_fq4lv"]
+[ext_resource type="Script" path="res://player/el/cats/puyo.gd" id="2_4pksp"]
+
+[node name="Puyo" type="Sprite2D"]
+position = Vector2(5.72205e-06, 7.62939e-06)
+rotation = -3.14159
+scale = Vector2(0.0802435, 0.0660995)
+texture = ExtResource("1_fq4lv")
+script = ExtResource("2_4pksp")

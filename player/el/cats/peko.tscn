@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkihr0du71skj"]
+
+[ext_resource type="Texture2D" uid="uid://b84385sf0mbwr" path="res://graphics/dds92rv-fbcd54ee-d2c9-4694-9bdb-18b62a793173.png" id="1_ikp31"]
+[ext_resource type="Script" path="res://player/el/cats/Peko.gd" id="2_0b576"]
+
+[node name="Peko" type="Sprite2D"]
+modulate = Color(0, 0, 0, 1)
+rotation = 3.14159
+scale = Vector2(0.0793293, 0.0645396)
+texture = ExtResource("1_ikp31")
+script = ExtResource("2_0b576")

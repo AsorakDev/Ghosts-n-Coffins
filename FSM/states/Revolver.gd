@@ -58,25 +58,39 @@ func shoot():
 	player.velocity.x = 0
 	
 	var revolver_projectile : Area2D
+	var pos : Vector2
 	
+	match shots_fired:
+		0, 3: 
+			pos = player.middle.global_position
+		1: 
+			pos = player.left_left.global_position
+		2:
+			pos = player.right_right.global_position
+		4: 
+			pos = player.left_middle.global_position
+		5:
+			pos = player.right_middle.global_position
+			
 	if can_tap:
 		revolver_projectile = tap_shot.instantiate() as Area2D
 
 	elif can_mash:
 		revolver_projectile = mash_shot.instantiate() as Area2D
 	
-	revolver_projectile.position = player.global_position
+	revolver_projectile.position = pos
 	$"../../Projectiles".add_child(revolver_projectile)
 		
 func _on_revolver_mash_timer_timeout():
 	can_tap = true
 	can_mash = false
 
-func _on_projectiles_child_exiting_tree(node : RevolverMashProjectile):
-	deleted_shots += 1
-	if deleted_shots == 5:
-		revolver_cool_down.start()
-		
+func _on_projectiles_child_exiting_tree(node):
+	if node as RevolverMashProjectile:
+		deleted_shots += 1
+		if deleted_shots == 5:
+			revolver_cool_down.start()
+			
 func _on_revolver_cool_down_timeout():
 	deleted_shots = 0
 	shots_fired = 0

@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8g68bx2bcl25"]
+
+[ext_resource type="Texture2D" uid="uid://cahq185p47sss" path="res://graphics/icon.svg" id="1_uo7q4"]
+[ext_resource type="PackedScene" uid="uid://m3p0l8dpdo7x" path="res://player/el/el.tscn" id="2_2g76t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8js6u"]
+size = Vector2(5736, 33)
+
+[node name="DebugLevel1" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(896, 1424)
+scale = Vector2(22.75, 0.25)
+texture = ExtResource("1_uo7q4")
+
+[node name="El" parent="." instance=ExtResource("2_2g76t")]
+position = Vector2(-1296, 1328)
+
+[node name="Camera2D" type="Camera2D" parent="El"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1452, 1424.5)
+shape = SubResource("RectangleShape2D_8js6u")

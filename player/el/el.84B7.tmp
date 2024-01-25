@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://m3p0l8dpdo7x"]
+[gd_scene load_steps=13 format=3 uid="uid://m3p0l8dpdo7x"]
 
 [ext_resource type="Script" path="res://player/el/El.gd" id="1_n3kq4"]
 [ext_resource type="Texture2D" uid="uid://c8vyumijcls4y" path="res://graphics/EL01.png" id="2_g217r"]
@@ -7,8 +7,6 @@
 [ext_resource type="Script" path="res://FSM/states/Walk.gd" id="5_73hle"]
 [ext_resource type="Script" path="res://FSM/states/Jump.gd" id="6_j1wrr"]
 [ext_resource type="Script" path="res://FSM/states/Fall.gd" id="7_ira4c"]
-[ext_resource type="Script" path="res://FSM/states/Crouch.gd" id="8_otdno"]
-[ext_resource type="Script" path="res://FSM/states/Slide.gd" id="8_pune7"]
 [ext_resource type="Script" path="res://FSM/states/PrimaryAttack.gd" id="10_221te"]
 [ext_resource type="Script" path="res://player/el/ArialAttack.gd" id="11_wi7rw"]
 
@@ -26,15 +24,13 @@ default_font_size = 50
 collision_mask = 32
 script = ExtResource("1_n3kq4")
 hit_points = 3
-move_speed = 500.0
-acceleration = 50.0
-max_fall_speed = 1000.0
+move_speed = 800.0
+acceleration = 100.0
+max_fall_speed = 1200.0
 jump_speed = -1000.0
 gravity = 300.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
-z_as_relative = false
 texture_filter = 1
 position = Vector2(0, 2.86102e-06)
 scale = Vector2(7.5, 10)
@@ -58,12 +54,6 @@ position = Vector2(-48, -32)
 [node name="PuyoMarker" type="Marker2D" parent="Markers"]
 position = Vector2(48, -32)
 
-[node name="ArialMarkerLeft" type="Marker2D" parent="Markers"]
-position = Vector2(-24, 88)
-
-[node name="ArialMarkerRight" type="Marker2D" parent="Markers"]
-position = Vector2(24, 88)
-
 [node name="FSM" type="Node" parent="." node_paths=PackedStringArray("inital_state")]
 script = ExtResource("3_lpiuc")
 inital_state = NodePath("Idle")
@@ -81,10 +71,8 @@ script = ExtResource("6_j1wrr")
 script = ExtResource("7_ira4c")
 
 [node name="Crouch" type="Node" parent="FSM"]
-script = ExtResource("8_otdno")
 
 [node name="Slide" type="Node" parent="FSM"]
-script = ExtResource("8_pune7")
 
 [node name="PrimaryAttack" type="Node" parent="FSM"]
 script = ExtResource("10_221te")
@@ -100,14 +88,6 @@ wait_time = 0.1
 one_shot = true
 
 [node name="ArialAttackTimer" type="Timer" parent="Timers"]
-process_callback = 0
-wait_time = 0.5
-one_shot = true
-
-[node name="ArialAttackSpawnTimer" type="Timer" parent="Timers"]
-process_callback = 0
-wait_time = 0.05
-one_shot = true
 
 [node name="SwapWeaponTimer" type="Timer" parent="Timers"]
 process_callback = 0
@@ -156,4 +136,3 @@ theme = SubResource("Theme_pd0if")
 
 [connection signal="timeout" from="Timers/PrimaryAttackTimer" to="FSM/PrimaryAttack" method="_on_primary_attack_timer_timeout"]
 [connection signal="timeout" from="Timers/ArialAttackTimer" to="FSM/ArialAttack" method="_on_arial_attack_timer_timeout"]
-[connection signal="timeout" from="Timers/ArialAttackSpawnTimer" to="FSM/ArialAttack" method="_on_arial_attack_spawn_timer_timeout"]

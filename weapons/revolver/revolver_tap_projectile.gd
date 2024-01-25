@@ -1,13 +1,8 @@
 extends Area2D
 class_name RevolverTapProjectile
 
-var acceleration : int = 0
-
 func _physics_process(_delta):
-	if acceleration >= -12:
-		acceleration += -3
-		
-	position.y += acceleration
+	position.y -= 10
 
 func _on_area_exited(area):
 	delete()

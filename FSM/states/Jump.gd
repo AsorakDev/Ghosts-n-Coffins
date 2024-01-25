@@ -9,6 +9,7 @@ func stateEnter():
 	jump()
 	
 func stateUpdate(_delta):
+	vary_jump_height()
 	transitions()
 
 func stateExit():
@@ -21,11 +22,16 @@ func jump():
 
 func transitions():
 	if not player.is_on_floor() and player.velocity.y > 0:
+		player.alter_move = false
 		state_transition.emit(self, "Fall")
-		
-	if player.jump_timer.is_stopped():
-		if player.direction.x == 0 and player.is_on_floor():
-			state_transition.emit(self, "Idle")
 
-		if player.direction.x != 0 and player.is_on_floor():
-			state_transition.emit(self, "Walk")
+	if player.jump_timer.is_stopped():
+		if player.is_on_floor():
+			state_transition.emit(self, "Idle")
+	
+	if not player.is_on_floor() and player.velocity.y < 0 and \
+	Input.is_action_just_pressed("primary attack") and player.can_arial_attack:
+		state_transition.emit(self, "ArialAttack")
+
+func vary_jump_height():
+	pass
